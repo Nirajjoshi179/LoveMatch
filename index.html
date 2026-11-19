@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff477e">
+<title>LoveMatch ❤️ - Love Calculator</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:Arial,sans-serif;
+background:linear-gradient(145deg,#fff0f5,#ffe0eb,#ffd3e2);
+min-height:100vh;
+color:#38202b;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+.app{
+width:100%;max-width:430px;
+background:#fff;
+border-radius:28px;
+padding:28px 22px;
+box-shadow:0 15px 50px #e94b7940;
+text-align:center;
+}
+.logo{
+font-size:55px;
+margin-bottom:8px;
+animation:beat 1.2s infinite;
+}
+@keyframes beat{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.12)}
+}
+h1{font-size:30px;color:#f04478;margin-bottom:8px}
+.subtitle{font-size:14px;color:#987482;line-height:1.6;margin-bottom:25px}
+.input-group{text-align:left;margin-bottom:16px}
+label{font-size:13px;font-weight:bold;color:#78485a;display:block;margin-bottom:8px}
+input{
+width:100%;padding:16px;
+border:2px solid #ffe0e9;
+border-radius:14px;
+outline:none;font-size:16px;
+background:#fff8fa;
+color:#38202b;
+}
+input:focus{border-color:#ff477e}
+.heart-divider{font-size:27px;margin:5px 0 15px}
+button{
+width:100%;padding:16px;
+border:0;border-radius:15px;
+background:linear-gradient(100deg,#ff477e,#ff759e);
+color:white;font-size:16px;font-weight:bold;
+cursor:pointer;
+box-shadow:0 7px 18px #ff477e40;
+}
+button:active{transform:scale(.97)}
+#result{display:none;margin-top:25px}
+.names{font-size:15px;color:#8b5368;font-weight:bold}
+.circle{
+width:155px;height:155px;
+border:9px solid #ffb5cb;
+border-radius:50%;
+display:flex;flex-direction:column;
+justify-content:center;align-items:center;
+margin:20px auto;
+background:#fff5f8;
+box-shadow:0 0 25px #ff477e30;
+}
+#percentage{font-size:42px;color:#f04478;font-weight:900}
+.circle small{font-size:12px;color:#a16d80}
+#message{font-size:17px;font-weight:bold;color:#e93d75;margin:12px 0}
+.description{font-size:13px;color:#987482;line-height:1.6;margin-bottom:20px}
+.actions{display:flex;gap:10px}
+.actions button{font-size:14px;padding:14px}
+.share{background:#25b967;box-shadow:none}
+.again{background:#fff0f5;color:#e94378;box-shadow:none}
+.footer{font-size:11px;color:#b18d9b;margin-top:24px;line-height:1.6}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<div class="logo">💘</div>
+<h1>Love Test</h1>
+<p class="subtitle">Discover your love compatibility!<br>Two names, one exciting love story.</p>
+
+<div id="form">
+<div class="input-group">
+<label for="name1">Your Name ❤️</label>
+<input id="name1" type="text" maxlength="30" placeholder="Enter your name">
+</div>
+
+<div class="heart-divider">💕</div>
+
+<div class="input-group">
+<label for="name2">Partner's / Crush's Name 💗</label>
+<input id="name2" type="text" maxlength="30" placeholder="Enter their name">
+</div>
+
+<button onclick="calculateLove()">Calculate Love ❤️</button>
+</div>
+
+<div id="result">
+<div class="names" id="couple"></div>
+<div class="circle">
+<span id="percentage">0%</span>
+<small>Love Compatibility</small>
+</div>
+<div id="message"></div>
+<p class="description" id="description"></p>
+
+<div class="actions">
+<button class="share" onclick="shareResult()">📲 Share</button>
+<button class="again" onclick="resetApp()">🔄 Again</button>
+</div>
+</div>
+
+<div class="footer">
+❤️ Just for fun! Love Test is an entertainment app.<br>
+Results are randomly generated and are not scientifically accurate.
+</div>
+
+</div>
+
+<script>
+let currentScore = 0;
+
+function calculateLove(){
+const n1=document.getElementById("name1").value.trim();
+const n2=document.getElementById("name2").value.trim();
+
+if(!n1 || !n2){
+alert("Please enter both names! ❤️");
+return;
+}
+
+if(n1.toLowerCase()===n2.toLowerCase()){
+alert("Please enter two different names! 💕");
+return;
+}
+
+// Stable score for the same pair of names
+let names=[n1.toLowerCase(),n2.toLowerCase()].sort();
+let str=names[0]+"&"+names[1];
+let hash=0;
+
+for(let i=0;i<str.length;i++){
+hash=((hash<<5)-hash)+str.charCodeAt(i);
+hash|=0;
+}
+
+currentScore=30+(Math.abs(hash)%71);
+
+document.getElementById("form").style.display="none";
+document.getElementById("result").style.display="block";
+
+document.getElementById("couple").textContent=n1+" ❤️ "+n2;
+document.getElementById("percentage").textContent="0%";
+
+let message,description;
+
+if(currentScore>=90){
+message="Perfect Love Match! 💖";
+description="Wow! Your love score is amazing. A beautiful connection deserves beautiful memories!";
+}
+else if(currentScore>=75){
+message="Made for Each Other! 🥰";
+description="Your match looks magical! Keep smiling, sharing and creating wonderful moments.";
+}
+else if(currentScore>=60){
+message="Sweet Connection! 💕";
+description="There is a lovely vibe here. Friendship, understanding and care make every connection special.";
+}
+else if(currentScore>=40){
+message="Cute Possibilities! 💗";
+description="Every great story starts somewhere. Enjoy the fun and let your connection grow naturally!";
+}
+else{
+message="A Mysterious Match! 💘";
+description="Love is full of surprises! Remember, a number cannot measure real feelings.";
+}
+
+document.getElementById("message").textContent=message;
+document.getElementById("description").textContent=description;
+
+let count=0;
+let timer=setInterval(()=>{
+count++;
+document.getElementById("percentage").textContent=count+"%";
+if(count>=currentScore)clearInterval(timer);
+},20);
+}
+
+function shareResult(){
+const n1=document.getElementById("name1").value.trim();
+const n2=document.getElementById("name2").value.trim();
+
+const text="❤️ Love Test Result ❤️\n\n"+n1+" + "+n2+"\n💕 Compatibility: "+currentScore+"%\n\nDiscover your love match! Just for fun. 💘";
+
+if(navigator.share){
+navigator.share({title:"Love Test ❤️",text:text}).catch(()=>{});
+}else{
+window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
+}
+}
+
+function resetApp(){
+document.getElementById("form").style.display="block";
+document.getElementById("result").style.display="none";
+document.getElementById("name1").value="";
+document.getElementById("name2").value="";
+document.getElementById("name1").focus();
+}
+</script>
+
+</body>
+</html>
